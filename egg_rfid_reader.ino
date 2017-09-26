@@ -26,8 +26,8 @@
 #include <SPI.h>
 #include <MFRC522.h>
 
-#define RST_PIN         9           // Configurable, see typical pin layout above
-#define SS_PIN          10          // Configurable, see typical pin layout above
+#define RST_PIN         5           // Configurable, see typical pin layout above
+#define SS_PIN          53          // Configurable, see typical pin layout above
 
 MFRC522 mfrc522(SS_PIN, RST_PIN);   // Create MFRC522 instance
 
@@ -71,18 +71,7 @@ void loop() {
 
   //------------------------------------------- GET FIRST NAME
   status = mfrc522.PCD_Authenticate(MFRC522::PICC_CMD_MF_AUTH_KEY_A, 4, &key, &(mfrc522.uid)); //line 834 of MFRC522.cpp file
-  if (status != MFRC522::STATUS_OK) {
-  //  Serial.print(F("Authentication failed: "));
-   // Serial.println(mfrc522.GetStatusCodeName(status));
-    return;
-  }
-
   status = mfrc522.MIFARE_Read(block, buffer1, &len);
-  if (status != MFRC522::STATUS_OK) {
-  //  Serial.print(F("Reading failed: "));
-  //  Serial.println(mfrc522.GetStatusCodeName(status));
-    return;
-  }
 
   //PRINT FIRST NAME
   //string으로 출력할 수 있게 바꿨다.
@@ -103,18 +92,7 @@ void loop() {
   block = 1;
 
   status = mfrc522.PCD_Authenticate(MFRC522::PICC_CMD_MF_AUTH_KEY_A, 1, &key, &(mfrc522.uid)); //line 834
-  if (status != MFRC522::STATUS_OK) {
-    //Serial.print(F("Authentication failed: "));
-    //Serial.println(mfrc522.GetStatusCodeName(status));
-    return;
-  }
-
   status = mfrc522.MIFARE_Read(block, buffer2, &len);
-  if (status != MFRC522::STATUS_OK) {
-    //Serial.print(F("Reading failed: "));
-    //Serial.println(mfrc522.GetStatusCodeName(status));
-    return;
-  }
 
   //PRINT LAST NAME
   for (uint8_t i = 0; i < 16; i++) {
